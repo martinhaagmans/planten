@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% macro create_field(field_name, variable_name) %}
+    <div class="row">
+        <div class="col-25">
+            <label for={{variable_name}}>{{field_name}}</label>
+        </div>
+        <div class="col-75">
+            <input type="text" id={{variable_name}} name={{variable_name}}>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro dropdown(field_name, variable_name, dropdown_entries) %}
+<div class="row">
+    <div class="col-25">
+        <label for={{variable_name}}>{{field_name}}</label>
+    </div>
+    <div class="col-75">
+        <select name={{variable_name}} id={{variable_name}}>
+            <option selected disabled hidden> -- selecteer een optie -- </option>
+            {% for entry in dropdown_entries %}
+                <option value={{entry[0]}}>{{entry[1]}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro checkbox(field_name, variable_name, checkbox_entries) %}
+<div class="row">
+    <div class="col-25">
+        <label for={{variable_name}}>{{field_name}}</label>
+    </div>
+    <div class="col-75" >
+            {% for entry in checkbox_entries %}
+            <div class="row">
+                <input type="checkbox" value={{entry[0]}} name={{variable_name}} id={{entry[0]}}>
+                <label for={{entry[0]}}> {{entry[1]}}</label>
+            </div>
+            {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+
+{% block content %}
+<script>
+function alphanumeric(checkValue) {
+    let alphanum = /^([0-9]|[a-z])+([0-9a-z]+)$/i;
+    if(! checkValue.match(alphanum)) {
+        return false;
+        }
+    else { return true; }
+}
+
+function checkForm (){ 
+    let lat_name = document.plant.lat_name.value
+    if (lat_name === ""){
+        alert ("Vul latijnse naam in")
+        return false
+    }
+    return true
+}
+</script>
+
+
+<h1> plant toevoegen</h1>
+<div class="container">
+    <form   name="plant" method="post" onsubmit="return checkForm()" enctype="multipart/form-data">
+
+        {{create_field("Latijnse naam", "lat_name")}}
+        {{create_field("Naam", "regular_name")}}
+
+        {{dropdown("Hoogte", "hoogte", 
+            [("zeerlaag", "Zeer laag (minder dan 30 cm)"),
+             ("laag", "Laag (30-79 cm)"),
+             ("middelhoog", "Middelhoog (80-139 cm)"),
+             ("hoog", "Hoog (140-200 cm)"),
+             ("zeerhoog", "Zeer hoog (meer dan 200 cm)")
+             ])}}
+     
+        {{dropdown("Breedte", "breedte", 
+            [("smalst", "Minder dan 25 cm"),
+             ("smal", "25 tot 49 cm"),
+             ("breed", "50 tot 99 cm"),
+             ("breedst", "Meer dan 100 cm")
+             ])}}
+
+        {{create_field("Planten per vierkante meter", "planten_per_m")}}
+
+        {{dropdown("Blad", "blad", 
+            [("groen", "Groenblijvend"),
+             ("semigroen", "Semi-groenblijvend"),
+             ("herfst", "Herfstkleur")
+             ])}}
+
+        {{dropdown("Soort", "soort", 
+            [("gras", "Gras"),
+             ("vast", "Vast"),
+             ("een", "Eenjarig"),
+             ("twee", "Tweejarig"),
+             ("var", "Varen"),
+             ("hees", "Heester"),
+             ("klim", "Klimplant"),
+             ("bol", "Bollen")
+             ])}}             
+
+        {{checkbox("Bloeitijd", "bloeitijd", 
+            [("jan", "Januari"),
+             ("feb", "Februari"),
+             ("mrt", "Maart"),
+             ("apr", "April"),
+             ("mei", "Mei"),
+             ("jun", "Juno"),
+             ("jul", "Juli"),
+             ("aug", "Augustus"),
+             ("sep", "September"),
+             ("okt", "Oktober"),
+             ("nov", "November"),
+             ("dec", "December")
+             ])}} 
+
+        {{checkbox("Architectuur", "architectuur", 
+            [("lij", "Lijnvormig blad, bijna geheel grondstandig"),
+             ("bg", "Breed, grondstandig blad"),
+             ("ho", "Hoog, oprijzend"),
+             ("bp", "Bladpol"),
+             ("op", "Opgaand"),
+             ("sp", "Stengelpol"),
+             ("ve", "Vertakt"),
+             ("kr", "Kruipend"),
+             ("pol", "Polvormend"),
+             ("mat", "Matvormend"),
+             ("zode", "Zodevormend")
+             ])}}    
+             
+        {{checkbox("Kleur", "kleur", 
+            [("wit", "Wit"),
+             ("roze", "Roze"),
+             ("geel", "Geel"),
+             ("oranje", "Oranje"),
+             ("rood", "Rood"),
+             ("paars", "Paars"),
+             ("lila", "Lila"),
+             ("groen", "Groen"),
+             ("zwart", "Zwart")
+             ])}}                 
+
+        {{checkbox("Structuur", "structuur", 
+            [("kort", "Kort"),
+             ("med", "3 tot 9 maanden"),
+             ("lang", "9 maanden"),
+             ])}}              
+
+        {{checkbox("Langlevend", "langlevend", 
+            [("md5", "Minder dan 5 jaar"),
+             ("md10", "Minder dan 10 jaar"),
+             ("per", "Permanent"),
+             ("ll", "Langlevend"),
+             ])}}      
+             
+        {{checkbox("Uitbreiding", "uitbreiding", 
+            [("geen", "Geen"),
+             ("zeerbep", "Zeer beperkt"),
+             ("langzaam,", "Langzaam"),
+             ("matig", "Matig"),
+             ("snel", "Snel"),
+             ])}}     
+
+        {{checkbox("Persistentie", "persistentie", 
+            [("zlaag", "Zeer laag"),
+             ("laag", "Laag"),
+             ("middel,", "Middelmatig"),
+             ("hoog", "Hoog"),
+             ])}}                     
+
+        {{checkbox("Uitzaaiend", "uitzaaiend", 
+            [("min", "Minimaal"),
+             ("matig", "Matig"),
+             ("hoog,", "Hoog"),
+             ])}}         
+             
+        {{checkbox("Licht", "licht", 
+            [("zon", "Zon"),
+             ("halfschaduw", "Halfschaduw"),
+             ("schaduw,", "Schaduw"),
+             ])}}    
+
+        {{checkbox("Grondsoort", "grondsoort", 
+            [("nat", "Nat"),
+             ("vochtig", "Vochtig"),
+             ("droog,", "Droog"),
+             ("zeervrucht,", "Zeer vruchtbaar"),
+             ("onvrucht,", "Onvruchtbaar"),
+             ])}}      
+
+        {{checkbox("Vermeerderen", "vermeerderen", 
+            [("stek", "Stekken"),
+             ("afleg", "Afleggen"),
+             ("scheur,", "Scheuren/Delen"),
+             ("uitlop,", "Uitlopers"),
+             ("zaai,", "Zaaien"),
+             ])}}                
+             
+        {{dropdown("Piet of niet", "piet", 
+            [("ja", "Ja"),
+             ("nee", "Nee"),
+             ])}}     
+             
+        {{dropdown("Winterhard", "winterhard", 
+            [("ja", "Ja"),
+             ("nee", "Nee"),
+             ("semi", "Semi"),
+             ])}}            
+
+        {{dropdown("Insecten", "insecten", 
+            [("bijen", "Bijen"),
+             ("vlinders", "Vlinders"),
+             ("beide", "Beide"),
+             ])}}               
+             
+        {{dropdown("Makkelijk", "makkelijk", 
+            [("ja", "Ja"),
+             ("nee", "Nee"),
+             ])}}   
+
+        {{dropdown("Inheems", "inheems", 
+            [("ja", "Ja"),
+             ("nee", "Nee"),
+             ])}} 
+
+        {{dropdown("Wintergroen", "wintergroen", 
+            [("ja", "Ja"),
+             ("nee", "Nee"),
+             ])}}              
+
+        {{create_field("Opmerkingen", "opmerkingen")}}
+        {{create_field("Opmerkingen Piet", "opmerkingen_piet")}}
+        {{create_field("Opmerkingen verzorging", "opmerkingen_verzorging")}}
+    <div class="row">
+        <div class="col-25">
+            <label for="picture">Foto</label>
+        </div>
+        <div class="col-75"> 
+            <input id="picture" type="file" name="picture" />
+        </div>
+    <div class="row">
+      <input type="submit" value="Voeg toe aan databases">
+    </div>
+
+
+    </form>
+</div>
+
+
+
+{% endblock content %}
