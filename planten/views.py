@@ -49,15 +49,6 @@ class AddPlant:
         self.execute_sql(sql)
         return
 
-    def parse_height(self, height):
-        height_minmax = dict()
-        height_minmax['zeerlaag'] = (0, 30)
-        height_minmax['laag'] = (30, 79)
-        height_minmax['middelhoog'] = (80, 139)
-        height_minmax['hoog'] = (140, 200)
-        height_minmax['zeerhoog'] = (201, 99999999999)
-        return height_minmax[height]
-
     def parse_width(self, width):
         width_minmax = dict()
         width_minmax['smalst'] = (0, 25)
@@ -73,27 +64,24 @@ class AddPlant:
                 VALUES ('{self.name_lat}')
                 """
         elif height is not None and width is None:
-            height_min, height_max = self.parse_height(height)
             sql = f"""INSERT INTO afmetingen
-                (LAT_NAAM, MIN_HOOGTE, MAX_HOOGTE, HOOGTE)
+                (LAT_NAAM, HOOGTE)
                 VALUES ('{self.name_lat}', 
-                {height_min}, {height_max},'{height}')
+                {height})
                 """
         elif height is None and width is not None:
             width_min, width_max = self.parse_width(width)
             sql = f"""INSERT INTO afmetingen
-                (LAT_NAAM,MIN_BREEDTE, MAX_BREEDTE, BREEDTE)
+                (LAT_NAAM, MIN_BREEDTE, MAX_BREEDTE, BREEDTE)
                 VALUES ('{self.name_lat}', 
                 {width_min}, {width_max},'{width}')
                 """
         elif height is not None and width is not None:
-            height_min, height_max = self.parse_height(height)
             width_min, width_max = self.parse_width(width)
             sql = f"""INSERT INTO afmetingen
-                (LAT_NAAM, MIN_HOOGTE, MAX_HOOGTE, HOOGTE,
+                (LAT_NAAM, HOOGTE,
                 MIN_BREEDTE, MAX_BREEDTE, BREEDTE)
-                VALUES ('{self.name_lat}', 
-                {height_min}, {height_max},'{height}',
+                VALUES ('{self.name_lat}', {height},
                 {width_min}, {width_max},'{width}')
                 """
         self.execute_sql(sql)
@@ -303,7 +291,7 @@ def nieuwe_plant():
 
         height = request.form.get('hoogte')
         width = request.form.get('breedte')
-        AP.write_size(height, width)
+        AP.write_size(int(height), width)
 
         blad = request.form.get('blad')
         planten_per_m = request.form.get('planten_per_m')

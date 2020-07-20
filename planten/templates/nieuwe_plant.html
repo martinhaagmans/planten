@@ -53,6 +53,14 @@ function alphanumeric(checkValue) {
     else { return true; }
 }
 
+function alphanumeric(checkValue) {
+    let alphanum = /^([0-9]|[a-z])+([0-9a-z]+)$/i;
+    if(! checkValue.match(alphanum)) {
+        return false;
+        }
+    else { return true; }
+}
+
 function checkForm (){ 
     let lat_name = document.plant.lat_name.value
     if (lat_name === ""){
@@ -70,14 +78,14 @@ function checkForm (){
 
         {{create_field("Latijnse naam", "lat_name")}}
         {{create_field("Naam", "regular_name")}}
-
-        {{dropdown("Hoogte", "hoogte", 
-            [("zeerlaag", "Zeer laag (minder dan 30 cm)"),
-             ("laag", "Laag (30-79 cm)"),
-             ("middelhoog", "Middelhoog (80-139 cm)"),
-             ("hoog", "Hoog (140-200 cm)"),
-             ("zeerhoog", "Zeer hoog (meer dan 200 cm)")
-             ])}}
+        <div class="row">
+            <div class="col-25">
+                <label for="hoogte">Hoogte</label>
+            </div>
+            <div class="col-75">
+                <input type="number" id="hoogte" name="hoogte">
+            </div>
+        </div>
      
         {{dropdown("Breedte", "breedte", 
             [("smalst", "Minder dan 25 cm"),
