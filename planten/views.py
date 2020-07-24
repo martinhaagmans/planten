@@ -91,7 +91,7 @@ class AddPlant:
         return 'lij bg ho bp op sp ve kr pol mat zode'.split()
 
     def get_color_options(self):
-        return 'wit roze geel oranje rood paars lila groen zwart'.split()
+        return 'wit roze geel oranje rood paars lila groen blauw zwart'.split()
 
     def get_months(self):
         return 'jan feb mrt apr mei jun jul aug sep okt nov dec'.split()
